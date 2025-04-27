@@ -1,13 +1,14 @@
 # Edit this configuration file to define what should be installed on your system
 # Help is available in the configuration.nix(5) man page and in the NixOS manual (by runnung 'nixos-help')
-{ config, pkgs, ... }
+{ config, pkgs, ... }:
+
 {
-  imports = {
+  imports =
     [ # include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
   # Bootloader
-  boot.loader.grup = {
+  boot.loader.grub = {
     enable = true;
     device = "/dev/sda";
     useOSProber = true;
@@ -49,7 +50,7 @@
   services.printing.enable = true;
 
   # enable sound with pipewire
-  hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -71,7 +72,7 @@
   users.users.findus = {
     isNormalUser = true;
     description = "Findus";
-    extraGroups = [ "networkmanager", "wheel", "video", "audio" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" ];
     packages = with pkgs; [
       # install user specific packages
       # thunderbird
@@ -81,11 +82,12 @@
   # TTY Auto Login
   services.getty.autologinUser = "findus";
 
-  # Install firefox
-  programs.firefox.enable = true;
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # Install Software with Home Manager ------------------------------
+  # Install firefox
+  programs.firefox.enable = true;
 
   # List packages installed in system profile. To search run 'nix search <package name>'
   environment.systemPackages = with pkgs; [
@@ -101,7 +103,22 @@
     firefox # web browser
     git # cli git
     # personal stuff
-    neovim
+    neovim # better terminal text editor
+    nautilus # better file browser
+    # kitty # terminal evtl benötigt für neovim
+    # Die Jetbrains IDE Palette und was dafür nötig ist
+    jetbrains.idea-ultimate         # IntelliJ 
+    jetbrains.clion                 # CLion
+    jetbrains.pycharm-professional  # PyCharm
+    jetbrains.webstorm              # WebStorm
+    gcc                             # C/C++ compiler
+    python313                       # python3 interpreter
+    conda                           # python package manager
+    # Office
+    obsidian # notes
+    thunderbird # email client
+    sublime # gui text editor
+    
   ];
 
   # hyprland setup
